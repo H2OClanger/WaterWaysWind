@@ -20,7 +20,7 @@ body,
 body {
   min-width: 320px;
   min-height: 100vh;
-  background: radial-gradient(circle at top, #13243d 0, #08111f 55%);
+  background: #08111f;
 }
 
 button,
@@ -37,13 +37,18 @@ textarea {
 }
 
 .app-header {
-  padding: 2rem 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
   border-bottom: 1px solid rgb(255 255 255 / 10%);
+  background: #0b172a;
 }
 
 .eyebrow {
-  margin: 0 0 0.35rem;
-  font-size: 0.75rem;
+  margin: 0 0 0.25rem;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -57,62 +62,76 @@ p {
 }
 
 h1 {
-  margin-bottom: 0.35rem;
-  font-size: clamp(2rem, 8vw, 3.5rem);
+  margin-bottom: 0.25rem;
+  font-size: clamp(1.5rem, 6vw, 2.5rem);
   line-height: 1;
 }
 
 .version {
   margin-bottom: 0;
-  opacity: 0.65;
-  font-size: 0.9rem;
+  opacity: 0.6;
+  font-size: 0.8rem;
 }
 
 .app-content {
-  width: min(100% - 2rem, 56rem);
-  margin: 0 auto;
-  padding: 2rem 0;
   flex: 1;
+  min-height: 0;
+  padding: 0.75rem;
 }
 
-.status-card {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  padding: 1.25rem;
+.map-panel {
+  position: relative;
+  min-height: calc(100vh - 7.5rem);
+  overflow: hidden;
   border: 1px solid rgb(255 255 255 / 12%);
   border-radius: 1rem;
-  background: rgb(255 255 255 / 5%);
+  background: #dfe7ec;
   box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%);
 }
 
-.status-card h2 {
-  margin-bottom: 0.4rem;
-  font-size: 1.1rem;
+.map {
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 7.5rem);
 }
 
-.status-card p {
-  margin-bottom: 0;
-  opacity: 0.72;
-  line-height: 1.5;
+.status-card {
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 5%);
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .status-indicator {
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.55rem;
+  height: 0.55rem;
   flex: 0 0 auto;
-  margin-top: 0.3rem;
   border-radius: 50%;
   background: #35d07f;
-  box-shadow: 0 0 0 0.3rem rgb(53 208 127 / 12%);
+  box-shadow: 0 0 0 0.25rem rgb(53 208 127 / 12%);
+}
+
+.ol-control button {
+  min-width: 2rem;
+  min-height: 2rem;
 }
 
 @media (min-width: 700px) {
   .app-header {
-    padding: 3rem 2rem 2rem;
+    padding: 1rem 1.5rem;
   }
 
   .app-content {
-    padding-top: 3rem;
+    padding: 1rem;
+  }
+
+  .map-panel,
+  .map {
+    min-height: calc(100vh - 6.5rem);
   }
 }
