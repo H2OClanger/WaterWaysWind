@@ -1,10 +1,11 @@
 import 'ol/ol.css';
 import './style.css';
 
-import { renderAppShell } from './ui/AppShell';
 import { bootstrap } from './core/Bootstrap';
 import { VERSION_STRING } from './core/Version';
-import { createMapView, performMapAction, type MapAction } from './map/MapView';
+import { getBrowserLocationProvider, getCurrentLocation } from './location/LocationService';
+import { createMapView, focusMapOnLocation, performMapAction, type MapAction } from './map/MapView';
+import { renderAppShell } from './ui/AppShell';
 
 const app = document.querySelector<HTMLElement>('#app');
 
@@ -22,11 +23,39 @@ if (!mapTarget) {
 }
 
 const map = createMapView({ target: mapTarget });
+const status = app.querySelector<HTMLElement>('[data-app-status]');
 
 app.querySelectorAll<HTMLButtonElement>('[data-map-action]').forEach((button) => {
   button.addEventListener('click', () => {
-    performMapAction(map, button.dataset.mapAction as MapAction);
+    const action = button.dataset.mapAction;
+
+    if (action === 'zoom-in' || action === 'zoom-out' || action === 'reset') {
+      performMapAction(map, action as MapAction);
+    }
   });
+});
+
+const locationButton = app.querySelector<HTMLButtonElement>('[data-location-action="locate"]');
+
+locationButton?.addEventListener('click', async () => {
+  const provider = getBrowserLocationProvider();
+
+  if (!provider) {
+    if (status) status.textContent = 'Location is not supported';
+    return;
+  }
+
+  locationButton.disabled = true;
+  if (status) status.textContent = 'Finding your location…';
+
+  try {
+    focusMapOnLocation(map, await getCurrentLocation(provider));
+    if (status) status.textContent = 'Map centred on your location';
+  } catch {
+    if (status) status.textContent = 'Location is unavailable';
+  } finally {
+    locationButton.disabled = false;
+  }
 });
 
 application.logger.info('Base map view initialised');
