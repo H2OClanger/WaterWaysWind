@@ -6,6 +6,7 @@ import { VERSION_STRING } from './core/Version';
 import { getBrowserLocationProvider, getCurrentLocation } from './location/LocationService';
 import { createBoatingInformationLayer } from './map/BoatingInformationLayer';
 import { createMapView, focusMapOnLocation, performMapAction, type MapAction } from './map/MapView';
+import { registerServiceWorker } from './pwa/registerServiceWorker';
 import { renderAppShell } from './ui/AppShell';
 
 const app = document.querySelector<HTMLElement>('#app');
@@ -71,4 +72,5 @@ boatingButton?.addEventListener('click', () => {
   if (status) status.textContent = visible ? 'Boating information shown' : 'Boating information hidden';
 });
 
+registerServiceWorker(window).catch(() => application.logger.info('Service worker registration failed'));
 application.logger.info('Base map and boating-information layer initialised');
