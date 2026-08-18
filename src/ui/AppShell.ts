@@ -14,7 +14,7 @@ export function renderAppShell({ version }: AppShellOptions): string {
         </div>
         <div class="status-card" role="status" aria-live="polite">
           <span class="status-indicator" aria-hidden="true"></span>
-          <span>Base map ready</span>
+          <span data-app-status>Base map ready</span>
         </div>
       </header>
       <main class="app-content">
@@ -24,6 +24,7 @@ export function renderAppShell({ version }: AppShellOptions): string {
             <button type="button" class="map-control" data-map-action="zoom-in" aria-label="Zoom in">+</button>
             <button type="button" class="map-control" data-map-action="zoom-out" aria-label="Zoom out">−</button>
             <button type="button" class="map-control map-control--labelled" data-map-action="reset">Centre London</button>
+            <button type="button" class="map-control map-control--labelled" data-location-action="locate">Find me</button>
           </div>
         </section>
       </main>
