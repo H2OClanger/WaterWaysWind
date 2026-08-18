@@ -6,7 +6,21 @@ describe('THAMES_BOATING_INFORMATION', () => {
     const ids = THAMES_BOATING_INFORMATION.map(({ id }) => id);
 
     expect(new Set(ids).size).toBe(ids.length);
-    expect(THAMES_BOATING_INFORMATION).toHaveLength(3);
+    expect(THAMES_BOATING_INFORMATION).toHaveLength(10);
+  });
+
+  it('includes the requested upstream lock reference points', () => {
+    const ids = THAMES_BOATING_INFORMATION.map(({ id }) => id);
+
+    expect(ids).toEqual(expect.arrayContaining([
+      'molesey-lock',
+      'sunbury-lock',
+      'shepperton-lock',
+      'chertsey-lock',
+      'penton-hook-lock',
+      'bell-weir-lock',
+      'old-windsor-lock'
+    ]));
   });
 
   it('contains valid geographic coordinates', () => {
