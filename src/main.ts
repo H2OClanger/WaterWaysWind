@@ -4,6 +4,7 @@ import './style.css';
 import { bootstrap } from './core/Bootstrap';
 import { VERSION_STRING } from './core/Version';
 import { getBrowserLocationProvider, getCurrentLocation } from './location/LocationService';
+import { createBoatingInformationLayer } from './map/BoatingInformationLayer';
 import { createMapView, focusMapOnLocation, performMapAction, type MapAction } from './map/MapView';
 import { renderAppShell } from './ui/AppShell';
 
@@ -23,6 +24,9 @@ if (!mapTarget) {
 }
 
 const map = createMapView({ target: mapTarget });
+const boatingInformationLayer = createBoatingInformationLayer();
+map.addLayer(boatingInformationLayer);
+
 const status = app.querySelector<HTMLElement>('[data-app-status]');
 
 app.querySelectorAll<HTMLButtonElement>('[data-map-action]').forEach((button) => {
@@ -58,4 +62,13 @@ locationButton?.addEventListener('click', async () => {
   }
 });
 
-application.logger.info('Base map view initialised');
+const boatingButton = app.querySelector<HTMLButtonElement>('[data-boating-action="toggle"]');
+
+boatingButton?.addEventListener('click', () => {
+  const visible = !boatingInformationLayer.getVisible();
+  boatingInformationLayer.setVisible(visible);
+  boatingButton.setAttribute('aria-pressed', String(visible));
+  if (status) status.textContent = visible ? 'Boating information shown' : 'Boating information hidden';
+});
+
+application.logger.info('Base map and boating-information layer initialised');
