@@ -37,5 +37,61 @@ export const THAMES_BOATING_INFORMATION: readonly BoatingInformation[] = [
     longitude: -0.3264,
     latitude: 51.4297,
     description: 'Lock reference point'
+  },
+  {
+    id: 'molesey-lock',
+    name: 'Molesey Lock',
+    kind: 'lock',
+    longitude: -0.345974,
+    latitude: 51.404803,
+    description: 'Lock reference point'
+  },
+  {
+    id: 'sunbury-lock',
+    name: 'Sunbury Lock',
+    kind: 'lock',
+    longitude: -0.406047,
+    latitude: 51.405096,
+    description: 'Lock reference point'
+  },
+  {
+    id: 'shepperton-lock',
+    name: 'Shepperton Lock',
+    kind: 'lock',
+    longitude: -0.459056,
+    latitude: 51.382002,
+    description: 'Lock reference point'
+  },
+  {
+    id: 'chertsey-lock',
+    name: 'Chertsey Lock',
+    kind: 'lock',
+    longitude: -0.48617,
+    latitude: 51.390808,
+    description: 'Lock reference point'
+  },
+  {
+    id: 'penton-hook-lock',
+    name: 'Penton Hook Lock',
+    kind: 'lock',
+    longitude: -0.50029,
+    latitude: 51.414801,
+    description: 'Lock reference point'
+  },
+  {
+    id: 'bell-weir-lock',
+    name: 'Bell Weir Lock',
+    kind: 'lock',
+    longitude: -0.537759,
+    latitude: 51.43843,
+    description: 'Lock reference point'
+  },
+  {
+    id: 'old-windsor-lock',
+    name: 'Old Windsor Lock',
+    kind: 'lock',
+    longitude: -0.569172,
+    latitude: 51.463609,
+    description: 'Lock reference point'
   }
 ];
