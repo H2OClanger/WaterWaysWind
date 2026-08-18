@@ -19,6 +19,11 @@ export interface MapViewOptions {
   readonly zoom?: number;
 }
 
+export interface MapLocation {
+  readonly longitude: number;
+  readonly latitude: number;
+}
+
 /** Provides the London defaults without requiring a browser map instance. */
 export function getInitialMapView(options: Omit<MapViewOptions, 'target'> = {}) {
   return {
@@ -59,4 +64,12 @@ export function performMapAction(map: Map, action: MapAction): void {
 
   const zoom = view.getZoom() ?? LONDON_LOCATION.zoom;
   view.animate({ zoom: zoom + (action === 'zoom-in' ? 1 : -1), duration: 150 });
+}
+
+/** Recentres the map on a position supplied by the location service. */
+export function focusMapOnLocation(map: Map, { longitude, latitude }: MapLocation): void {
+  const view = map.getView();
+  const zoom = Math.max(view.getZoom() ?? LONDON_LOCATION.zoom, 13);
+
+  view.animate({ center: fromLonLat([longitude, latitude]), zoom, duration: 250 });
 }
