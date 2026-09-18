@@ -1,3 +1,5 @@
+/* global caches, fetch, self */
+
 const CACHE_NAME = 'waterwayswind-shell-v1';
 const APP_SHELL = ['/'];
 
