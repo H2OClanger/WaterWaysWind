@@ -59,5 +59,8 @@ locationButton?.addEventListener('click', async () => {
   }
 });
 
-registerServiceWorker(window).catch(() => application.logger.info('Service worker registration failed'));
+const serviceWorkerHost =
+  typeof navigator !== 'undefined' ? { serviceWorker: navigator.serviceWorker } : {};
+
+registerServiceWorker(serviceWorkerHost).catch(() => application.logger.info('Service worker registration failed'));
 application.logger.info('Base map initialised');
