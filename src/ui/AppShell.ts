@@ -6,6 +6,7 @@ export interface AppShellOptions {
 export function renderAppShell({ version }: AppShellOptions): string {
   return `
     <section class="app-shell" aria-labelledby="app-title">
+      <a class="skip-link" href="#map">Skip to interactive map</a>
       <header class="app-header">
         <div>
           <p class="eyebrow">H2OWyW</p>
@@ -19,7 +20,8 @@ export function renderAppShell({ version }: AppShellOptions): string {
       </header>
       <main class="app-content">
         <section class="map-panel" aria-label="WaterWaysWind map">
-          <div id="map" class="map" aria-label="Interactive map centred on London"></div>
+          <p id="map-keyboard-help" class="visually-hidden">Use arrow keys to pan the map, plus and minus to zoom, or use the map controls.</p>
+          <div id="map" class="map" tabindex="0" aria-label="Interactive map centred on London" aria-describedby="map-keyboard-help"></div>
           <div class="map-controls" role="group" aria-label="Map controls">
             <button type="button" class="map-control" data-map-action="zoom-in" aria-label="Zoom in">+</button>
             <button type="button" class="map-control" data-map-action="zoom-out" aria-label="Zoom out">−</button>
