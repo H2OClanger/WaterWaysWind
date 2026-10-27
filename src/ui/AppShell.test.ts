@@ -17,6 +17,9 @@ describe('renderAppShell', () => {
     expect(markup).toContain('data-location-action="locate"');
     expect(markup).toContain('data-boating-action="toggle"');
     expect(markup).toContain('aria-pressed="true"');
+    expect(markup).toContain('data-wind-reading');
+    expect(markup).toContain('data-wind-forecast');
+    expect(markup).toContain('Next twelve hours of wind');
     expect(markup).toContain('0.1.0');
   });
 });
