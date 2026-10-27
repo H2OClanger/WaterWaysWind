@@ -9,7 +9,7 @@ describe('renderAppShell', () => {
     expect(markup).toContain('id="map"');
     expect(markup).toContain('tabindex="0"');
     expect(markup).toContain('aria-describedby="map-keyboard-help"');
-    expect(markup).toContain('id="map-keyboard-help"');
+    expect(markup).toContain('Tap or click the map to update wind conditions');
     expect(markup).toContain('aria-label="Map controls"');
     expect(markup).toContain('data-map-action="zoom-in"');
     expect(markup).toContain('data-map-action="zoom-out"');
@@ -17,6 +17,7 @@ describe('renderAppShell', () => {
     expect(markup).toContain('data-location-action="locate"');
     expect(markup).toContain('data-boating-action="toggle"');
     expect(markup).toContain('aria-pressed="true"');
+    expect(markup).toContain('data-wind-location');
     expect(markup).toContain('data-wind-reading');
     expect(markup).toContain('data-wind-forecast');
     expect(markup).toContain('Next twelve hours of wind');
