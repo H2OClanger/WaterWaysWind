@@ -6,6 +6,7 @@ import { VERSION_STRING } from './core/Version';
 import { getBrowserLocationProvider, getCurrentLocation } from './location/LocationService';
 import { createBoatingInformationLayer } from './map/BoatingInformationLayer';
 import { createMapView, focusMapOnLocation, performMapAction, type MapAction } from './map/MapView';
+import { formatWindReading, getCurrentWind } from './weather/WindService';
 import { registerServiceWorker } from './pwa/registerServiceWorker';
 import { renderAppShell } from './ui/AppShell';
 
@@ -29,6 +30,15 @@ const boatingInformationLayer = createBoatingInformationLayer();
 map.addLayer(boatingInformationLayer);
 
 const status = app.querySelector<HTMLElement>('[data-app-status]');
+const windReading = app.querySelector<HTMLElement>('[data-wind-reading]');
+
+getCurrentWind((input) => fetch(input), { latitude: 51.5074, longitude: -0.1276 })
+  .then((reading) => {
+    if (windReading) windReading.textContent = formatWindReading(reading);
+  })
+  .catch(() => {
+    if (windReading) windReading.textContent = 'Wind unavailable';
+  });
 
 app.querySelectorAll<HTMLButtonElement>('[data-map-action]').forEach((button) => {
   button.addEventListener('click', () => {
