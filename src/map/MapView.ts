@@ -2,7 +2,8 @@ import Map from 'ol/Map.js';
 import View from 'ol/View.js';
 import TileLayer from 'ol/layer/Tile.js';
 import OSM from 'ol/source/OSM.js';
-import { fromLonLat } from 'ol/proj.js';
+import type { Coordinate } from 'ol/coordinate.js';
+import { fromLonLat, toLonLat } from 'ol/proj.js';
 
 export const LONDON_LOCATION = {
   longitude: -0.1276,
@@ -31,6 +32,12 @@ export function getInitialMapView(options: Omit<MapViewOptions, 'target'> = {}) 
     latitude: options.latitude ?? LONDON_LOCATION.latitude,
     zoom: options.zoom ?? LONDON_LOCATION.zoom
   };
+}
+
+/** Converts an OpenLayers map coordinate into a geographic location. */
+export function getLocationFromMapCoordinate(coordinate: Coordinate): MapLocation {
+  const [longitude, latitude] = toLonLat(coordinate);
+  return { longitude, latitude };
 }
 
 /** Creates the base interactive map used by the application. */
