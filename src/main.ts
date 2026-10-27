@@ -5,7 +5,14 @@ import { bootstrap } from './core/Bootstrap';
 import { VERSION_STRING } from './core/Version';
 import { getBrowserLocationProvider, getCurrentLocation } from './location/LocationService';
 import { createBoatingInformationLayer } from './map/BoatingInformationLayer';
-import { createMapView, focusMapOnLocation, performMapAction, type MapAction } from './map/MapView';
+import {
+  createMapView,
+  focusMapOnLocation,
+  getLocationFromMapCoordinate,
+  performMapAction,
+  type MapAction,
+  type MapLocation
+} from './map/MapView';
 import { formatWindReading, getCurrentWind, getWindForecast, type WindForecastPoint } from './weather/WindService';
 import { registerServiceWorker } from './pwa/registerServiceWorker';
 import { renderAppShell } from './ui/AppShell';
@@ -30,9 +37,10 @@ const boatingInformationLayer = createBoatingInformationLayer();
 map.addLayer(boatingInformationLayer);
 
 const status = app.querySelector<HTMLElement>('[data-app-status]');
+const windLocationLabel = app.querySelector<HTMLElement>('[data-wind-location]');
 const windReading = app.querySelector<HTMLElement>('[data-wind-reading]');
 const windForecast = app.querySelector<HTMLOListElement>('[data-wind-forecast]');
-const windLocation = { latitude: 51.5074, longitude: -0.1276 };
+let windRequestId = 0;
 
 function renderWindForecast(target: HTMLOListElement, forecast: readonly WindForecastPoint[]): void {
   const items = forecast.map((point) => {
@@ -50,21 +58,43 @@ function renderWindForecast(target: HTMLOListElement, forecast: readonly WindFor
   target.replaceChildren(...items);
 }
 
-getCurrentWind((input) => fetch(input), windLocation)
-  .then((reading) => {
-    if (windReading) windReading.textContent = formatWindReading(reading);
-  })
-  .catch(() => {
-    if (windReading) windReading.textContent = 'Wind unavailable';
-  });
+function getApproximateWindLocation({ longitude, latitude }: MapLocation): MapLocation {
+  return {
+    longitude: Math.round(longitude * 100) / 100,
+    latitude: Math.round(latitude * 100) / 100
+  };
+}
 
-getWindForecast((input) => fetch(input), windLocation)
-  .then((forecast) => {
-    if (windForecast) renderWindForecast(windForecast, forecast);
-  })
-  .catch(() => {
-    if (windForecast) windForecast.textContent = 'Forecast unavailable';
-  });
+function loadWind(location: MapLocation, label: string): void {
+  const requestId = ++windRequestId;
+
+  if (windLocationLabel) windLocationLabel.textContent = `Wind for ${label}`;
+  if (windReading) windReading.textContent = 'Loading wind…';
+  if (windForecast) windForecast.textContent = '';
+
+  getCurrentWind((input) => fetch(input), location)
+    .then((reading) => {
+      if (requestId === windRequestId && windReading) windReading.textContent = formatWindReading(reading);
+    })
+    .catch(() => {
+      if (requestId === windRequestId && windReading) windReading.textContent = 'Wind unavailable';
+    });
+
+  getWindForecast((input) => fetch(input), location)
+    .then((forecast) => {
+      if (requestId === windRequestId && windForecast) renderWindForecast(windForecast, forecast);
+    })
+    .catch(() => {
+      if (requestId === windRequestId && windForecast) windForecast.textContent = 'Forecast unavailable';
+    });
+}
+
+loadWind({ latitude: 51.5074, longitude: -0.1276 }, 'London');
+
+map.on('singleclick', ({ coordinate }) => {
+  loadWind(getApproximateWindLocation(getLocationFromMapCoordinate(coordinate)), 'selected map area');
+  if (status) status.textContent = 'Wind updated for selected map area';
+});
 
 app.querySelectorAll<HTMLButtonElement>('[data-map-action]').forEach((button) => {
   button.addEventListener('click', () => {
@@ -91,7 +121,7 @@ locationButton?.addEventListener('click', async () => {
 
   try {
     focusMapOnLocation(map, await getCurrentLocation(provider));
-    if (status) status.textContent = 'Map centred on your location';
+    if (status) status.textContent = 'Map centred on your location; tap the map to update wind';
   } catch {
     if (status) status.textContent = 'Location is unavailable';
   } finally {
