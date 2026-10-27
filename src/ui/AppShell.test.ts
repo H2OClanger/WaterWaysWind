@@ -21,6 +21,9 @@ describe('renderAppShell', () => {
     expect(markup).toContain('data-wind-reading');
     expect(markup).toContain('data-wind-forecast');
     expect(markup).toContain('Next twelve hours of wind');
+    expect(markup).toContain('https://open-meteo.com/');
+    expect(markup).toContain('Map selections are rounded to about 1 km');
+    expect(markup).toContain('Find me” stays on your device');
     expect(markup).toContain('0.1.0');
   });
 });
