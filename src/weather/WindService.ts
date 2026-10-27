@@ -79,19 +79,21 @@ export async function getWindForecast(fetcher: Fetcher, { latitude, longitude }:
 
   const data = (await response.json()) as OpenMeteoResponse;
   const hourly = data.hourly;
+  const times = hourly?.time;
+  const windSpeeds = hourly?.wind_speed_10m;
+  const windDirections = hourly?.wind_direction_10m;
 
   if (
-    !hourly ||
-    !Array.isArray(hourly.time) ||
-    !Array.isArray(hourly.wind_speed_10m) ||
-    !Array.isArray(hourly.wind_direction_10m)
+    !Array.isArray(times) ||
+    !Array.isArray(windSpeeds) ||
+    !Array.isArray(windDirections)
   ) {
     throw new Error('Wind forecast is unavailable.');
   }
 
-  const forecast = hourly.time.slice(0, 12).map((time, index) => {
-    const speedKnots = hourly.wind_speed_10m?.[index];
-    const directionDegrees = hourly.wind_direction_10m?.[index];
+  const forecast = times.slice(0, 12).map((time, index) => {
+    const speedKnots = windSpeeds[index];
+    const directionDegrees = windDirections[index];
 
     if (typeof time !== 'string' || typeof speedKnots !== 'number' || typeof directionDegrees !== 'number') {
       throw new Error('Wind forecast is unavailable.');
