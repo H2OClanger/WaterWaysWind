@@ -20,10 +20,10 @@ export function renderAppShell({ version }: AppShellOptions): string {
       </header>
       <main class="app-content">
         <section class="map-panel" aria-label="WaterWaysWind map">
-          <p id="map-keyboard-help" class="visually-hidden">Use arrow keys to pan the map, plus and minus to zoom, or use the map controls.</p>
+          <p id="map-keyboard-help" class="visually-hidden">Use arrow keys to pan the map, plus and minus to zoom, or use the map controls. Tap or click the map to update wind conditions for that point.</p>
           <div id="map" class="map" tabindex="0" aria-label="Interactive map centred on London" aria-describedby="map-keyboard-help"></div>
           <aside class="wind-card" aria-label="Wind conditions">
-            <p class="wind-card__label">Current wind</p>
+            <p class="wind-card__label" data-wind-location>Wind for London</p>
             <p class="wind-card__reading" data-wind-reading>Loading wind…</p>
             <p class="wind-card__detail">Modelled 10 m wind</p>
             <ol class="wind-card__forecast" data-wind-forecast aria-label="Next twelve hours of wind"></ol>
