@@ -22,10 +22,11 @@ export function renderAppShell({ version }: AppShellOptions): string {
         <section class="map-panel" aria-label="WaterWaysWind map">
           <p id="map-keyboard-help" class="visually-hidden">Use arrow keys to pan the map, plus and minus to zoom, or use the map controls.</p>
           <div id="map" class="map" tabindex="0" aria-label="Interactive map centred on London" aria-describedby="map-keyboard-help"></div>
-          <aside class="wind-card" aria-label="Current wind">
+          <aside class="wind-card" aria-label="Wind conditions">
             <p class="wind-card__label">Current wind</p>
             <p class="wind-card__reading" data-wind-reading>Loading wind…</p>
             <p class="wind-card__detail">Modelled 10 m wind</p>
+            <ol class="wind-card__forecast" data-wind-forecast aria-label="Next twelve hours of wind"></ol>
           </aside>
           <div class="map-controls" role="group" aria-label="Map controls">
             <button type="button" class="map-control" data-map-action="zoom-in" aria-label="Zoom in">+</button>
