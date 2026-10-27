@@ -27,6 +27,7 @@ export function renderAppShell({ version }: AppShellOptions): string {
             <p class="wind-card__reading" data-wind-reading>Loading wind…</p>
             <p class="wind-card__detail">Modelled 10 m wind</p>
             <ol class="wind-card__forecast" data-wind-forecast aria-label="Next twelve hours of wind"></ol>
+            <p class="wind-card__source">Weather: <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a>. Map selections are rounded to about 1 km. “Find me” stays on your device.</p>
           </aside>
           <div class="map-controls" role="group" aria-label="Map controls">
             <button type="button" class="map-control" data-map-action="zoom-in" aria-label="Zoom in">+</button>
