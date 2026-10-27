@@ -9,7 +9,7 @@ export interface WindReading {
   readonly observedAt: string;
 }
 
-export interface WindForecastPoint extends WindReading {}
+export type WindForecastPoint = WindReading;
 
 export interface FetchResponse {
   readonly ok: boolean;
