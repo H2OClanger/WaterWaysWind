@@ -6,7 +6,7 @@ import { VERSION_STRING } from './core/Version';
 import { getBrowserLocationProvider, getCurrentLocation } from './location/LocationService';
 import { createBoatingInformationLayer } from './map/BoatingInformationLayer';
 import { createMapView, focusMapOnLocation, performMapAction, type MapAction } from './map/MapView';
-import { formatWindReading, getCurrentWind } from './weather/WindService';
+import { formatWindReading, getCurrentWind, getWindForecast, type WindForecastPoint } from './weather/WindService';
 import { registerServiceWorker } from './pwa/registerServiceWorker';
 import { renderAppShell } from './ui/AppShell';
 
@@ -31,13 +31,39 @@ map.addLayer(boatingInformationLayer);
 
 const status = app.querySelector<HTMLElement>('[data-app-status]');
 const windReading = app.querySelector<HTMLElement>('[data-wind-reading]');
+const windForecast = app.querySelector<HTMLOListElement>('[data-wind-forecast]');
+const windLocation = { latitude: 51.5074, longitude: -0.1276 };
 
-getCurrentWind((input) => fetch(input), { latitude: 51.5074, longitude: -0.1276 })
+function renderWindForecast(target: HTMLOListElement, forecast: readonly WindForecastPoint[]): void {
+  const items = forecast.map((point) => {
+    const item = document.createElement('li');
+    const time = document.createElement('time');
+    const reading = document.createElement('span');
+
+    time.dateTime = point.observedAt;
+    time.textContent = point.observedAt.slice(-5);
+    reading.textContent = formatWindReading(point);
+    item.append(time, reading);
+    return item;
+  });
+
+  target.replaceChildren(...items);
+}
+
+getCurrentWind((input) => fetch(input), windLocation)
   .then((reading) => {
     if (windReading) windReading.textContent = formatWindReading(reading);
   })
   .catch(() => {
     if (windReading) windReading.textContent = 'Wind unavailable';
+  });
+
+getWindForecast((input) => fetch(input), windLocation)
+  .then((forecast) => {
+    if (windForecast) renderWindForecast(windForecast, forecast);
+  })
+  .catch(() => {
+    if (windForecast) windForecast.textContent = 'Forecast unavailable';
   });
 
 app.querySelectorAll<HTMLButtonElement>('[data-map-action]').forEach((button) => {
