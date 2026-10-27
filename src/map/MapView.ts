@@ -36,7 +36,14 @@ export function getInitialMapView(options: Omit<MapViewOptions, 'target'> = {}) 
 
 /** Converts an OpenLayers map coordinate into a geographic location. */
 export function getLocationFromMapCoordinate(coordinate: Coordinate): MapLocation {
-  const [longitude, latitude] = toLonLat(coordinate);
+  const location = toLonLat(coordinate);
+  const longitude = location[0];
+  const latitude = location[1];
+
+  if (longitude === undefined || latitude === undefined) {
+    throw new Error('Map coordinate is unavailable.');
+  }
+
   return { longitude, latitude };
 }
 
